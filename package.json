@@ -1,0 +1,34 @@
+{
+  "name": "@iushev/rbac-sequelize-manager",
+  "version": "1.0.2",
+  "private": false,
+  "author": "Ivaylo Ushev",
+  "description": "RBAC Database Manager",
+  "license": "ISC",
+  "main": "./build",
+  "scripts": {
+    "build": "tsc -p ./src",
+    "watch": "tsc -w -p ./src",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/faker": "^5.1.7",
+    "@types/jest": "^26.0.21",
+    "@types/node": "^14.14.35",
+    "@types/umzug": "^2.3.0",
+    "faker": "^5.4.0",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.4",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "@iushev/rbac": "^1.0.7"
+  },
+  "peerDependencies": {
+    "sequelize": "^6.6.2",
+    "umzug": "^2.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
