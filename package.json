@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc -p ./src",
     "watch": "tsc -w -p ./src",
-    "test": "jest"
+    "test": "jest --watch --runInBand"
   },
   "devDependencies": {
     "@types/faker": "^5.1.7",
@@ -25,6 +25,8 @@
     "@iushev/rbac": "^1.0.7"
   },
   "peerDependencies": {
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
     "sequelize": "^6.6.2",
     "umzug": "^2.3.0"
   },

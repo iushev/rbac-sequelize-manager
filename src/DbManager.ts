@@ -29,19 +29,9 @@ export class DbManager extends BaseManager {
   private sequelize: Sequelize;
 
   /**
-   * Map itemName => Item
-   */
-  protected items: Map<string, RbacItem> = new Map();
-
-  /**
    * Map itemName => childName => Item
    */
   protected children: Map<string, Map<string, RbacItem>> = new Map();
-
-  /**
-   * Map ruleName => Rule
-   */
-  protected rules: Map<string, RbacRule> = new Map();
 
   constructor(options: DbManagerOptions) {
     super(options);
@@ -580,7 +570,7 @@ export class DbManager extends BaseManager {
   /**
    * @inheritdoc
    */
-  protected async load(): Promise<void> {
+  public async load(): Promise<void> {
     this.log(`[DbManager] Loading RBAC.`);
     const data = await Promise.all([
       ItemModel.findAll({

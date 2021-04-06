@@ -1,11 +1,11 @@
-import path from "path";
-import fs from "fs";
 import { Sequelize } from "sequelize";
 
-import initModels from "@iushev/rbac-sequelize-manager/models";
-import { DbManager } from "@iushev/rbac-sequelize-manager";
+import { BaseManager, Item, ItemType, Permission, Role, Rule, RuleParams } from "@iushev/rbac";
 
-import authManagerTest from "../../rbac/tests/AuthManager";
+import initModels from "../src/models";
+import { DbManager } from "../src";
+
+import { testAuthManager } from "@iushev/rbac";
 
 describe("Testing DbManager", () => {
   let sequelize = new Sequelize(process.env.DATABASE_URL!, {
@@ -22,8 +22,15 @@ describe("Testing DbManager", () => {
   });
 
   afterAll(async () => {
+    await auth.removeAll();
     await sequelize.close();
   });
 
-  authManagerTest(auth);
+  afterEach(async () => {
+    await auth.removeAll();
+  });
+
+  describe("AuthManager test", () => {
+    testAuthManager(auth);
+  });
 });

@@ -3,7 +3,7 @@ import path from "path";
 import Umzug from "umzug";
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize(process.env.DB_URI!, {
+const sequelize = new Sequelize(process.env.DATABASE_URL!, {
   dialect: "postgres",
   logging: false,
 });
