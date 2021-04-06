@@ -22,7 +22,6 @@ describe("Testing DbManager", () => {
   });
 
   afterAll(async () => {
-    await auth.removeAll();
     await sequelize.close();
   });
 
