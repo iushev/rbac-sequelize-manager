@@ -1,7 +1,5 @@
 import { Sequelize } from "sequelize";
 
-import { BaseManager, Item, ItemType, Permission, Role, Rule, RuleParams } from "@iushev/rbac";
-
 import initModels from "../src/models";
 import { DbManager } from "../src";
 
@@ -17,7 +15,6 @@ describe("Testing DbManager", () => {
   const auth = new DbManager({
     sequelize,
     defaultRoles: ["myDefaultRole"],
-    // logging: logger.info,
     logging: false,
   });
 

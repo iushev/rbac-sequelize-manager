@@ -28,11 +28,6 @@ export interface DbManagerOptions extends BaseManagerOptions {
 export class DbManager extends BaseManager {
   private sequelize: Sequelize;
 
-  /**
-   * Map itemName => childName => Item
-   */
-  protected children: Map<string, Map<string, RbacItem>> = new Map();
-
   constructor(options: DbManagerOptions) {
     super(options);
 
