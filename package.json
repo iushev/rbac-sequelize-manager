@@ -7,7 +7,7 @@
   "license": "ISC",
   "main": "./build",
   "bin": {
-    "rbac-sequelize-manager-cli": "./build/cli.js"
+    "rbac-sequelize-manager": "./build/cli.js"
   },
   "scripts": {
     "build": "tsc -p ./src",
