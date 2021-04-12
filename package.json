@@ -6,6 +6,9 @@
   "description": "RBAC Database Manager",
   "license": "ISC",
   "main": "./build",
+  "bin": {
+    "rbac-sequelize-manager-cli": "./build/cli.ts"
+  },
   "scripts": {
     "build": "tsc -p ./src",
     "watch": "tsc -w -p ./src",
