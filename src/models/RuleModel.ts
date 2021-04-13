@@ -6,7 +6,7 @@ export class RuleModel extends Model {
   public name!: string;
   public data!: string;
 
-  public execute: RuleExecuteFunction = (_username, _item, _params) => true;
+  public execute: RuleExecuteFunction = async (_username, _item, _params) => true;
 }
 
 export default (sequelize: Sequelize): typeof RuleModel => {
