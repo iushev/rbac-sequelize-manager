@@ -12,6 +12,7 @@ const umzug = new Umzug({
   storage: "sequelize",
   storageOptions: {
     sequelize: sequelize,
+    tableName: "rbac_migrations",
   },
 
   // see: https://github.com/sequelize/umzug/issues/17
@@ -31,7 +32,7 @@ const umzug = new Umzug({
 });
 
 function logUmzugEvent(eventName: string) {
-  return function (name: string, migration: Umzug.Migration) {
+  return function (name: string, _migration: Umzug.Migration) {
     console.log(`${name} ${eventName}`);
   };
 }
@@ -98,8 +99,6 @@ const cmdMigratePrev = async (): Promise<Umzug.Migration[]> => {
   return umzug.down({ to: prev });
 };
 
-const cmdCreateSuperUser = () => {};
-
 const cmd = process.argv[2].trim();
 let cmdFunc: any;
 
@@ -123,10 +122,6 @@ switch (cmd) {
 
   case "migrate-prev":
     cmdFunc = cmdMigratePrev;
-    break;
-
-  case "createSuperUser":
-    cmdFunc = cmdCreateSuperUser;
     break;
 
   default:

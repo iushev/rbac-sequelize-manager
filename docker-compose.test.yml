@@ -3,23 +3,27 @@ version: "3.8"
 services:
   db:
     image: postgres:13
-    container_name: rbac-sequelize-manageer-db-test
+    container_name: rbac-sequelize-manager-db-test
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: ems@ems
-      POSTGRES_USER: ems
-      POSTGRES_DB: ems
+      POSTGRES_PASSWORD: rbac@rbac
+      POSTGRES_USER: rbac
+      POSTGRES_DB: rbac
 
   server:
-    build: ./
-    image: rbac-sequelize-manageer-test
-    container_name: rbac-sequelize-manageer-test
+    build:
+      context: .
+      dockerfile: ./Dockerfile.test
+    image: rbac-sequelize-manager-test
+    container_name: rbac-sequelize-manager-test
     volumes:
+      - /opt/rbac/rbac-sequelize-manager/node_modules
+      - /opt/rbac/rbac-sequelize-manager/build
       - .:/opt/rbac/rbac-sequelize-manager
       - ../rbac:/opt/rbac/rbac
     environment:
-      DATABASE_URL: "postgres://ems:ems%40ems@db:5432/ems"
+      DATABASE_URL: "postgres://rbac:rbac%40rbac@db:5432/rbac"
     depends_on:
       - db
-    command: sh -c "npm run build && node build/cli.js migrate && npm run test"
+    # command: sh -c "npm run build && node build/cli.js migrate && npm run test"

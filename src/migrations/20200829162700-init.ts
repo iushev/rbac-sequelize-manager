@@ -32,9 +32,7 @@ export const up = async (query: QueryInterface) => {
         type: {
           type: DataTypes.ENUM,
           allowNull: false,
-          values: Object.keys(ItemType).map(
-            (key) => ItemType[key as keyof (typeof ItemType)]
-          ),
+          values: Object.keys(ItemType).map((key) => ItemType[key as keyof typeof ItemType]),
         },
         description: DataTypes.TEXT(),
         rule_name: DataTypes.STRING(64),
