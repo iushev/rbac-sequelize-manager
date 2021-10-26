@@ -132,7 +132,7 @@ switch (cmd) {
 const execute = async () => {
   try {
     await cmdFunc();
-  } catch (err) {
+  } catch (err: any) {
     console.error("ERROR:", err.message);
   }
 };
