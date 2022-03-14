@@ -4,6 +4,7 @@ services:
   db:
     image: postgres:13
     container_name: rbac-sequelize-manager-db-test
+    init: true
     ports:
       - "5432:5432"
     environment:
@@ -17,6 +18,7 @@ services:
       dockerfile: ./Dockerfile.test
     image: rbac-sequelize-manager-test
     container_name: rbac-sequelize-manager-test
+    init: true
     volumes:
       - /opt/rbac/rbac-sequelize-manager/node_modules
       - /opt/rbac/rbac-sequelize-manager/build

@@ -1,46 +1,64 @@
 #!/usr/bin/env node
 import path from "path";
-import Umzug from "umzug";
+import fs from "fs";
+import { Umzug, SequelizeStorage, MigrationMeta } from "umzug";
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize(process.env.DATABASE_URL!, {
+import initModels from "./models";
+
+const sequelize = new Sequelize(process.env.DATABASE_URL ?? "postgres://rbac:rbac%40rbac@localhost:5432/rbac", {
   dialect: "postgres",
   logging: false,
 });
 
-const umzug = new Umzug({
-  storage: "sequelize",
-  storageOptions: {
-    sequelize: sequelize,
-    tableName: "rbac_migrations",
-  },
+initModels(sequelize);
 
-  // see: https://github.com/sequelize/umzug/issues/17
-  migrations: {
-    params: [
-      sequelize.getQueryInterface(), // queryInterface
-      sequelize.constructor, // DataTypes
-      function () {
-        throw new Error(
-          'Migration tried to use old style "done" callback. Please upgrade to "umzug" and return a promise instead.'
-        );
-      },
-    ],
-    path: path.resolve(__dirname, "migrations"),
-    pattern: /^\d{14}[\w-]+\.js$/,
-  },
+const findMigrations = (findPath: string, migrations: Map<string, string>) => {
+  const files = fs.readdirSync(findPath);
+  files.forEach((file) => {
+    const filePath = path.join(findPath, file);
+    const fileStat = fs.statSync(filePath);
+    if (fileStat.isDirectory()) {
+      findMigrations(filePath, migrations);
+    } else {
+      if (/^\d{14}[\w-]+\.(js|ts)$/.test(file)) {
+        migrations.set(file, filePath);
+      }
+    }
+  });
+};
+
+const allMigrations: Map<string, string> = new Map();
+findMigrations(path.resolve(__dirname), allMigrations);
+
+const migrations: any[] = [];
+allMigrations.forEach((value, key) => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const migration = require(value);
+  migrations.push({
+    name: key,
+    up: migration.up,
+    down: migration.down,
+  });
 });
 
-function logUmzugEvent(eventName: string) {
-  return function (name: string, _migration: Umzug.Migration) {
-    console.log(`${name} ${eventName}`);
-  };
-}
-
-umzug.on("migrating", logUmzugEvent("migrating"));
-umzug.on("migrated", logUmzugEvent("migrated"));
-umzug.on("reverting", logUmzugEvent("reverting"));
-umzug.on("reverted", logUmzugEvent("reverted"));
+const umzug = new Umzug({
+  storage: new SequelizeStorage({
+    sequelize,
+    tableName: "rbac_migrations",
+  }),
+  migrations: migrations.sort((a, b) => {
+    if (a.name === b.name) {
+      return 0;
+    } else if (a.name > b.name) {
+      return 1;
+    } else {
+      return -1;
+    }
+  }),
+  context: sequelize.getQueryInterface(),
+  logger: console,
+});
 
 interface IStatus {
   executed: string[];
@@ -48,12 +66,12 @@ interface IStatus {
 }
 
 const cmdStatus = async (): Promise<IStatus> => {
-  const executed = (await umzug.executed()).map((m: Umzug.Migration) => {
-    return m.file;
+  const executed = (await umzug.executed()).map((m: MigrationMeta) => {
+    return m.name;
   });
 
-  const pending = (await umzug.pending()).map((m: Umzug.Migration) => {
-    return m.file;
+  const pending = (await umzug.pending()).map((m: MigrationMeta) => {
+    return m.name;
   });
 
   const current = executed.length > 0 ? path.basename(executed[0], ".js") : "<NO_MIGRATIONS>";
@@ -68,16 +86,16 @@ const cmdStatus = async (): Promise<IStatus> => {
   return { executed, pending };
 };
 
-const cmdMigrate = async (): Promise<Umzug.Migration[]> => {
-  const pending = (await umzug.pending()).map((m: Umzug.Migration) => {
-    return m.file;
+const cmdMigrate = async (): Promise<MigrationMeta[]> => {
+  const pending = (await umzug.pending()).map((m: MigrationMeta) => {
+    return m.name;
   });
 
   console.log("pending:", JSON.stringify(pending, null, 2));
-  return await umzug.up();
+  return umzug.up();
 };
 
-const cmdMigrateNext = async (): Promise<Umzug.Migration[]> => {
+const cmdMigrateNext = async (): Promise<MigrationMeta[]> => {
   const { pending } = await cmdStatus();
   if (pending.length === 0) {
     return Promise.reject(new Error("No pending migrations"));
@@ -86,11 +104,11 @@ const cmdMigrateNext = async (): Promise<Umzug.Migration[]> => {
   return umzug.up({ to: next });
 };
 
-const cmdMigrateDown = async (): Promise<Umzug.Migration[]> => {
+const cmdMigrateDown = async (): Promise<MigrationMeta[]> => {
   return umzug.down({ to: 0 });
 };
 
-const cmdMigratePrev = async (): Promise<Umzug.Migration[]> => {
+const cmdMigratePrev = async (): Promise<MigrationMeta[]> => {
   const { executed } = await cmdStatus();
   if (executed.length === 0) {
     return Promise.reject(new Error("Already at initial state"));

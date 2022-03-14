@@ -1,7 +1,7 @@
 import { QueryInterface, DataTypes } from "sequelize";
 import { ItemType } from "@iushev/rbac";
 
-export const up = async (query: QueryInterface) => {
+export const up = async ({ context: query }: { context: QueryInterface }) => {
   const transaction = await query.sequelize.transaction();
   try {
     await query.createTable(
@@ -150,7 +150,7 @@ export const up = async (query: QueryInterface) => {
   }
 };
 
-export const down = async (query: QueryInterface) => {
+export const down = async ({ context: query }: { context: QueryInterface }) => {
   const transaction = await query.sequelize.transaction();
   try {
     await query.dropTable("rbac_assignment", { transaction });

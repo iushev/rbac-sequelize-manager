@@ -1,4 +1,4 @@
-import { Sequelize, ModelType } from "sequelize";
+import { Sequelize, ModelStatic, Model } from "sequelize";
 
 import ruleModelInit from "./RuleModel";
 import itemModelInit from "./ItemModel";
@@ -8,7 +8,7 @@ import permissionModelInit from "./PermissionModel";
 import assignmentModelInit from "./AssignmentModel";
 
 export default (sequelize: Sequelize) => {
-  const models: ModelType[] = [];
+  const models: ModelStatic<Model>[] = [];
 
   models.push(ruleModelInit(sequelize));
   models.push(itemModelInit(sequelize));
@@ -18,7 +18,7 @@ export default (sequelize: Sequelize) => {
   models.push(assignmentModelInit(sequelize));
 
   models.forEach((model) => {
-    const _model = model as ModelType & {
+    const _model = model as ModelStatic<Model> & {
       associate?: () => void;
     };
 
