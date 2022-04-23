@@ -1,4 +1,4 @@
-import faker from "faker";
+import faker from "@faker-js/faker";
 import { Sequelize } from "sequelize";
 
 import initModels, { RoleModel } from "@iushev/rbac-sequelize-manager/models";
