@@ -611,7 +611,7 @@ export default class DbManager extends BaseManager {
 
     const children = await this.getChildren(child.name);
 
-    for (let value of children.values()) {
+    for (const value of children.values()) {
       if (await this.detectLoop(parent, value)) {
         return true;
       }

@@ -33,4 +33,4 @@ export { ItemModel } from "./ItemModel";
 export { RoleModel } from "./RoleModel";
 export { PermissionModel } from "./PermissionModel";
 export { ItemChildModel } from "./ItemChildModel";
-export { AssignmentModel } from "./AssignmentModel"
+export { AssignmentModel } from "./AssignmentModel";
