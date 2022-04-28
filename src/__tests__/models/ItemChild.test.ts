@@ -2,7 +2,8 @@ import faker from "@faker-js/faker";
 import { Sequelize } from "sequelize";
 
 import { ItemType } from "@iushev/rbac";
-import initModels, { ItemModel, ItemChildModel } from "@iushev/rbac-sequelize-manager/models";
+
+import initModels, { ItemModel, ItemChildModel } from "../../models";
 
 describe("ItemChild model", () => {
   let sequelize: Sequelize;

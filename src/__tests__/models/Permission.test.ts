@@ -1,7 +1,7 @@
 import faker from "@faker-js/faker";
 import { Sequelize } from "sequelize";
 
-import initModels, { PermissionModel } from "@iushev/rbac-sequelize-manager/models";
+import initModels, { PermissionModel } from "../../models";
 
 describe("Permission model", () => {
   let sequelize: Sequelize;

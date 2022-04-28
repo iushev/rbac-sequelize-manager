@@ -19,29 +19,29 @@ import { ItemChildModel } from "./ItemChildModel";
 import { AssignmentModel } from "./AssignmentModel";
 
 export class ItemModel extends Model {
-  public name!: string;
-  public type!: ItemType;
-  public description!: string | null;
-  public ruleName!: string | null;
-  public data!: string | null;
+  public declare name: string;
+  public declare type: ItemType;
+  public declare description: string | null;
+  public declare ruleName: string | null;
+  public declare data: string | null;
 
-  public getRule!: BelongsToGetAssociationMixin<RuleModel>;
-  public setRule!: BelongsToSetAssociationMixin<RuleModel, string>;
-  public readonly rule!: RuleModel;
+  public declare getRule: BelongsToGetAssociationMixin<RuleModel>;
+  public declare setRule: BelongsToSetAssociationMixin<RuleModel, string>;
+  public declare readonly rule: RuleModel;
 
-  public getParents!: BelongsToManyGetAssociationsMixin<ItemModel>;
-  public setParents!: BelongsToManySetAssociationsMixin<ItemModel, number>;
-  public addParent!: BelongsToManyAddAssociationMixin<ItemModel, number>;
-  public hasParent!: BelongsToManyHasAssociationMixin<ItemModel, number>;
-  public countParents!: BelongsToManyCountAssociationsMixin;
-  public parents!: ItemModel[];
+  public declare getParents: BelongsToManyGetAssociationsMixin<ItemModel>;
+  public declare setParents: BelongsToManySetAssociationsMixin<ItemModel, number>;
+  public declare addParent: BelongsToManyAddAssociationMixin<ItemModel, number>;
+  public declare hasParent: BelongsToManyHasAssociationMixin<ItemModel, number>;
+  public declare countParents: BelongsToManyCountAssociationsMixin;
+  public declare readonly parents: ItemModel[];
 
-  public getChildren!: BelongsToManyGetAssociationsMixin<ItemModel>;
-  public setChildren!: BelongsToManySetAssociationsMixin<ItemModel, number>;
-  public addChild!: BelongsToManyAddAssociationMixin<ItemModel, number>;
-  public hasChild!: BelongsToManyHasAssociationMixin<ItemModel, number>;
-  public countChildren!: BelongsToManyCountAssociationsMixin;
-  public children!: ItemModel[];
+  public declare getChildren: BelongsToManyGetAssociationsMixin<ItemModel>;
+  public declare setChildren: BelongsToManySetAssociationsMixin<ItemModel, number>;
+  public declare addChild: BelongsToManyAddAssociationMixin<ItemModel, number>;
+  public declare hasChild: BelongsToManyHasAssociationMixin<ItemModel, number>;
+  public declare countChildren: BelongsToManyCountAssociationsMixin;
+  public declare readonly children: ItemModel[];
 
   public get parentNames(): string[] {
     return this.parents.map((parent) => parent.name);
@@ -97,9 +97,7 @@ export const attributeDefs = {
   type: {
     type: DataTypes.ENUM,
     allowNull: false,
-    values: Object.keys(ItemType).map(
-      (key) => ItemType[key as keyof typeof ItemType]
-    ),
+    values: Object.keys(ItemType).map((key) => ItemType[key as keyof typeof ItemType]),
   },
   description: DataTypes.TEXT(),
   ruleName: {

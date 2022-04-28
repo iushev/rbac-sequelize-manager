@@ -3,7 +3,7 @@ import { Sequelize } from "sequelize";
 
 import { ItemType, Identity } from "@iushev/rbac";
 
-import initModels, { ItemModel, AssignmentModel } from "@iushev/rbac-sequelize-manager/models";
+import initModels, { ItemModel, AssignmentModel } from "../../models";
 
 describe("Assignment model", () => {
   let sequelize: Sequelize;

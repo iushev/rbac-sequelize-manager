@@ -12,7 +12,7 @@ services:
       POSTGRES_USER: rbac
       POSTGRES_DB: rbac
 
-  server:
+  rbac-test:
     build:
       context: .
       dockerfile: ./Dockerfile.test

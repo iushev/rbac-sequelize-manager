@@ -3,8 +3,8 @@ import { Model, Sequelize, DataTypes } from "sequelize";
 import { RuleExecuteFunction } from "@iushev/rbac";
 
 export class RuleModel extends Model {
-  public name!: string;
-  public data!: string;
+  public declare name: string;
+  public declare data: string;
 
   public execute: RuleExecuteFunction = async (_username, _item, _params) => true;
 }

@@ -2,7 +2,8 @@ import faker from "@faker-js/faker";
 import { Sequelize } from "sequelize";
 
 import { ItemType } from "@iushev/rbac";
-import initModels, { ItemModel } from "@iushev/rbac-sequelize-manager/models";
+
+import initModels, { ItemModel } from "../../models";
 
 describe("Item model", () => {
   let sequelize: Sequelize;
@@ -38,12 +39,15 @@ describe("Item model", () => {
   });
 
   test("Create new item with rule", async () => {
-    const item = await ItemModel.create({
-      ...itemData,
-      rule: ruleData,
-    },{
-      include: "rule",
-    });
+    const item = await ItemModel.create(
+      {
+        ...itemData,
+        rule: ruleData,
+      },
+      {
+        include: "rule",
+      }
+    );
 
     expect(item).toBeTruthy();
     expect(item.rule).toBeTruthy();

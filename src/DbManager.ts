@@ -1,7 +1,7 @@
 import { Sequelize, Op } from "sequelize";
 
 import {
-  Item as RbacItem,
+  IItem as RbacItem,
   Role as RbacRole,
   Permission as RbacPermission,
   ItemType as RbacItemType,
@@ -9,7 +9,7 @@ import {
   Rule as RbacRule,
   Assignment as RbacAssignment,
   BaseManager,
-  BaseManagerOptions
+  BaseManagerOptions,
 } from "@iushev/rbac";
 
 import initModels, {
@@ -25,7 +25,7 @@ export interface DbManagerOptions extends BaseManagerOptions {
   sequelize: Sequelize;
 }
 
-export class DbManager extends BaseManager {
+export default class DbManager extends BaseManager {
   private sequelize: Sequelize;
 
   constructor(options: DbManagerOptions) {
@@ -37,6 +37,60 @@ export class DbManager extends BaseManager {
 
     this.sequelize = options.sequelize;
     initModels(this.sequelize);
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public async load(): Promise<void> {
+    this.log("`DbManager: Loading RBAC.");
+    const data = await Promise.all([
+      ItemModel.findAll({
+        include: [
+          {
+            association: ItemModel.associations.parents,
+            attributes: ["name"],
+          },
+        ],
+      }),
+      RuleModel.findAll(),
+    ]);
+
+    const [items, rules] = data;
+
+    this.items = items.reduce<Map<string, RbacItem>>((prevValue, item) => {
+      const ItemClass = item.type === ItemType.role ? RbacRole : RbacPermission;
+      const rbacItem = new ItemClass({
+        name: item.name,
+        description: item.description,
+        ruleName: item.ruleName,
+      });
+
+      prevValue.set(item.name, rbacItem);
+      return prevValue;
+    }, new Map());
+
+    this.parents = items.reduce<Map<string, Map<string, RbacItem>>>((prevValue, item) => {
+      prevValue.set(
+        item.name,
+        new Map(
+          item.parents.reduce((itemParents, parent) => {
+            itemParents.set(parent.name, this.items.get(parent.name));
+            return itemParents;
+          }, new Map())
+        )
+      );
+      return prevValue;
+    }, new Map());
+
+    this.rules = rules.reduce<Map<string, RbacRule>>((prevValue, rule) => {
+      const ruleData = JSON.parse(rule.data);
+      const RuleClass = this.ruleClasses.get(ruleData.typeName) ?? RbacRule;
+      const rbacRule = new RuleClass(rule.name, JSON.parse(ruleData.ruleData));
+
+      prevValue.set(rule.name, rbacRule);
+      return prevValue;
+    }, new Map());
   }
 
   /**
@@ -59,7 +113,6 @@ export class DbManager extends BaseManager {
     return roles.reduce<Map<string, RbacRole>>((prevValue, role) => {
       const rbacRole = new RbacRole({
         name: role.name,
-        type: role.type,
         description: role.description,
         ruleName: role.ruleName,
       });
@@ -111,7 +164,6 @@ export class DbManager extends BaseManager {
     return permissions.reduce<Map<string, RbacPermission>>((prevValue, permission) => {
       const rbacPermission = new RbacPermission({
         name: permission.name,
-        type: permission.type,
         description: permission.description,
         ruleName: permission.ruleName,
       });
@@ -146,9 +198,7 @@ export class DbManager extends BaseManager {
 
     const data = JSON.parse(rule.data);
     const RuleClass = this.ruleClasses.get(data.typeName) ?? RbacRule;
-    const rbacRule = new RuleClass(rule.name, JSON.parse(data.ruleData));
-
-    return rbacRule;
+    return new RuleClass(rule.name, JSON.parse(data.ruleData));
   }
 
   /**
@@ -258,9 +308,9 @@ export class DbManager extends BaseManager {
     });
 
     return items.reduce<Map<string, RbacItem>>((prevValue, item) => {
-      const rbacItem = new RbacItem({
+      const ItemClass = item.type === ItemType.role ? RbacRole : RbacPermission;
+      const rbacItem = new ItemClass({
         name: item.name,
-        type: item.type,
         description: item.description,
         ruleName: item.ruleName,
       });
@@ -279,12 +329,7 @@ export class DbManager extends BaseManager {
       username,
     });
 
-    const rbacAssignment = new RbacAssignment({
-      itemName: assignment.itemName,
-      username: assignment.username,
-    });
-
-    return rbacAssignment;
+    return new RbacAssignment(assignment.username, assignment.itemName);
   }
 
   /**
@@ -328,12 +373,7 @@ export class DbManager extends BaseManager {
       return null;
     }
 
-    const rbacAssignment = new RbacAssignment({
-      itemName: assignment.itemName,
-      username: assignment.username,
-    });
-
-    return rbacAssignment;
+    return new RbacAssignment(assignment.username, assignment.itemName);
   }
 
   /**
@@ -347,11 +387,7 @@ export class DbManager extends BaseManager {
     });
 
     return assignments.reduce<Map<string, RbacAssignment>>((prevValue, assignment) => {
-      const rbacAssignment = new RbacAssignment({
-        itemName: assignment.itemName,
-        username: assignment.username,
-      });
-
+      const rbacAssignment = new RbacAssignment(assignment.username, assignment.itemName);
       prevValue.set(assignment.itemName, rbacAssignment);
       return prevValue;
     }, new Map());
@@ -560,61 +596,6 @@ export class DbManager extends BaseManager {
 
     this.invalidateRbac();
     return true;
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public async load(): Promise<void> {
-    this.log(`[DbManager] Loading RBAC.`);
-    const data = await Promise.all([
-      ItemModel.findAll({
-        include: [
-          {
-            association: ItemModel.associations.parents,
-            attributes: ["name"],
-          },
-        ],
-      }),
-      RuleModel.findAll(),
-    ]);
-
-    const [items, rules] = data;
-
-    this.items = items.reduce<Map<string, RbacItem>>((prevValue, item) => {
-      const ItemClass = item.type === ItemType.role ? RbacRole : RbacPermission;
-      const rbacItem = new ItemClass({
-        type: item.type,
-        name: item.name,
-        description: item.description,
-        ruleName: item.ruleName,
-      });
-
-      prevValue.set(item.name, rbacItem);
-      return prevValue;
-    }, new Map());
-
-    this.parents = items.reduce<Map<string, Map<string, RbacItem>>>((prevValue, item) => {
-      prevValue.set(
-        item.name,
-        new Map(
-          item.parents.reduce((prevValue, parent) => {
-            prevValue.set(parent.name, this.items.get(parent.name));
-            return prevValue;
-          }, new Map())
-        )
-      );
-      return prevValue;
-    }, new Map());
-
-    this.rules = rules.reduce<Map<string, RbacRule>>((prevValue, rule) => {
-      const data = JSON.parse(rule.data);
-      const RuleClass = this.ruleClasses.get(data.typeName) ?? RbacRule;
-      const rbacRule = new RuleClass(rule.name, JSON.parse(data.ruleData));
-
-      prevValue.set(rule.name, rbacRule);
-      return prevValue;
-    }, new Map());
   }
 
   /**

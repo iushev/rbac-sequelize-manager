@@ -9,13 +9,13 @@ import {
 
 import { ItemModel } from "./ItemModel";
 
-export class AssignmentModel extends Model  {
-  public itemName!: string;
-  public username!: string;
+export class AssignmentModel extends Model {
+  public declare itemName: string;
+  public declare username: string;
 
-  public getItem!: BelongsToGetAssociationMixin<ItemModel>;
-  public setItem!: BelongsToSetAssociationMixin<ItemModel, string>;
-  public readonly item!: ItemModel;
+  public declare getItem: BelongsToGetAssociationMixin<ItemModel>;
+  public declare setItem: BelongsToSetAssociationMixin<ItemModel, string>;
+  public declare readonly item: ItemModel;
 
   public static associations: {
     item: Association<AssignmentModel, ItemModel>;
@@ -56,15 +56,6 @@ export default (sequelize: Sequelize): typeof AssignmentModel => {
       tableName: "rbac_assignment",
       underscored: true,
       updatedAt: false,
-      // indexes: [
-      //   {
-      //     unique: true,
-      //     fields: ["item_id", "user_id"],
-      //   },
-      //   {
-      //     fields: ["user_id"],
-      //   },
-      // ],
     }
   );
   return AssignmentModel;

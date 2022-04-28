@@ -1,7 +1,7 @@
 import faker from "@faker-js/faker";
 import { Sequelize } from "sequelize";
 
-import initModels, { RoleModel } from "@iushev/rbac-sequelize-manager/models";
+import initModels, { RoleModel } from "../../models";
 
 describe("Role model", () => {
   let sequelize: Sequelize;

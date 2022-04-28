@@ -1,24 +1,18 @@
-import {
-  Model,
-  Sequelize,
-  DataTypes,
-  BelongsToGetAssociationMixin,
-  BelongsToSetAssociationMixin,
-} from "sequelize";
+import { Model, Sequelize, DataTypes, BelongsToGetAssociationMixin, BelongsToSetAssociationMixin } from "sequelize";
 
 import { ItemModel } from "./ItemModel";
 
 export class ItemChildModel extends Model {
-  public parentName!: string;
-  public childName!: string;
+  public declare parentName: string;
+  public declare childName: string;
 
-  public getParent!: BelongsToGetAssociationMixin<ItemModel>;
-  public setParent!: BelongsToSetAssociationMixin<ItemModel, string>;
-  public readonly parent!: ItemModel;
+  public declare getParent: BelongsToGetAssociationMixin<ItemModel>;
+  public declare setParent: BelongsToSetAssociationMixin<ItemModel, string>;
+  public declare readonly parent: ItemModel;
 
-  public getChild!: BelongsToGetAssociationMixin<ItemModel>;
-  public setChild!: BelongsToSetAssociationMixin<ItemModel, string>;
-  public readonly child!: ItemModel;
+  public declare getChild: BelongsToGetAssociationMixin<ItemModel>;
+  public declare setChild: BelongsToSetAssociationMixin<ItemModel, string>;
+  public declare readonly child: ItemModel;
 
   public static associate() {
     ItemChildModel.belongsTo(ItemModel, {
