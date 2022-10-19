@@ -7,7 +7,7 @@ describe("Permission model", () => {
   let sequelize: Sequelize;
 
   beforeAll(async () => {
-    sequelize = new Sequelize(process.env.DATABASE_URL!, {
+    sequelize = new Sequelize(process.env.DATABASE_URL, {
       dialect: "postgres",
       logging: false,
     });
