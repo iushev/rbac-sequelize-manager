@@ -1,4 +1,4 @@
-declare namespace NodeJS {
+export namespace NodeJS {
   export interface ProcessEnv {
     DATABASE_URL: string;
   }

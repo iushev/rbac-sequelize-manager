@@ -69,7 +69,7 @@ export async function prepareData(rbacManager: BaseManager) {
 }
 
 describe("Testing DbManager", () => {
-  const sequelize = new Sequelize(process.env.DATABASE_URL!, {
+  const sequelize = new Sequelize(process.env.DATABASE_URL ?? "", {
     dialect: "postgres",
     logging: false,
   });
