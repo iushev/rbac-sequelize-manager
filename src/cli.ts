@@ -42,20 +42,22 @@ allMigrations.forEach((value, key) => {
   });
 });
 
+migrations.sort((a, b) => {
+  if (a.name === b.name) {
+    return 0;
+  } else if (a.name > b.name) {
+    return 1;
+  } else {
+    return -1;
+  }
+});
+
 const umzug = new Umzug({
   storage: new SequelizeStorage({
     sequelize,
     tableName: "rbac_migrations",
   }),
-  migrations: migrations.sort((a, b) => {
-    if (a.name === b.name) {
-      return 0;
-    } else if (a.name > b.name) {
-      return 1;
-    } else {
-      return -1;
-    }
-  }),
+  migrations,
   context: sequelize.getQueryInterface(),
   logger: console,
 });

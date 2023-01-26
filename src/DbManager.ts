@@ -476,7 +476,7 @@ export default class DbManager extends BaseManager {
   /**
    * @inheritdoc
    */
-  protected async getItems(type: RbacItemType): Promise<Map<string, RbacItem>> {
+  public async getItems(type: RbacItemType): Promise<Map<string, RbacItem>> {
     const items = await ItemModel.findAll({
       where: {
         type,
@@ -500,7 +500,7 @@ export default class DbManager extends BaseManager {
   /**
    * @inheritdoc
    */
-  protected async addItem(item: RbacItem): Promise<boolean> {
+  public async addItem(item: RbacItem): Promise<boolean> {
     await ItemModel.create({
       name: item.name,
       type: item.type,
@@ -514,7 +514,7 @@ export default class DbManager extends BaseManager {
   /**
    * @inheritdoc
    */
-  protected async addRule(rbacRule: RbacRule): Promise<boolean> {
+  public async addRule(rbacRule: RbacRule): Promise<boolean> {
     const rule = RuleModel.build({
       name: rbacRule.name,
       data: JSON.stringify({
@@ -531,7 +531,7 @@ export default class DbManager extends BaseManager {
   /**
    * @inheritdoc
    */
-  protected async removeItem(item: RbacItem): Promise<boolean> {
+  public async removeItem(item: RbacItem): Promise<boolean> {
     await ItemModel.destroy({
       where: {
         name: item.name,
@@ -544,7 +544,7 @@ export default class DbManager extends BaseManager {
   /**
    * @inheritdoc
    */
-  protected async removeRule(rule: RbacRule): Promise<boolean> {
+  public async removeRule(rule: RbacRule): Promise<boolean> {
     await RuleModel.destroy({
       where: {
         name: rule.name,
@@ -557,7 +557,7 @@ export default class DbManager extends BaseManager {
   /**
    * @inheritdoc
    */
-  protected async updateItem(name: string, item: RbacItem): Promise<boolean> {
+  public async updateItem(name: string, item: RbacItem): Promise<boolean> {
     await ItemModel.update(
       {
         name: item.name,
@@ -578,7 +578,7 @@ export default class DbManager extends BaseManager {
   /**
    * @inheritdoc
    */
-  protected async updateRule(name: string, rbacRule: RbacRule): Promise<boolean> {
+  public async updateRule(name: string, rbacRule: RbacRule): Promise<boolean> {
     await RuleModel.update(
       {
         name: rbacRule.name,
@@ -645,11 +645,14 @@ export default class DbManager extends BaseManager {
    * @param {{ [key: string]: true }} result the children and grand children (in array keys)
    */
   protected getChildrenRecursive(name: string, childrenList: Map<string, string[]>, result: Map<string, true>) {
-    if (childrenList.has(name)) {
-      for (const child of childrenList.get(name)!) {
-        result.set(child, true);
-        this.getChildrenRecursive(child, childrenList, result);
-      }
+    const children = childrenList.get(name);
+    if (!children) {
+      return;
+    }
+
+    for (const child of children) {
+      result.set(child, true);
+      this.getChildrenRecursive(child, childrenList, result);
     }
   }
 
