@@ -456,7 +456,7 @@ export default class DbManager extends BaseManager {
   /**
    * @inheritdoc
    */
-  protected async getItem(name: string): Promise<RbacItem | null> {
+  public async getItem(name: string): Promise<RbacItem | null> {
     const item = await ItemModel.findByPk(name, {
       include: [ItemModel.associations.parents],
     });
