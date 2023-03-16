@@ -64,6 +64,7 @@ export default class DbManager extends BaseManager {
         name: item.name,
         description: item.description,
         ruleName: item.ruleName,
+        data: item.data,
       });
 
       prevValue.set(item.name, rbacItem);
@@ -115,6 +116,7 @@ export default class DbManager extends BaseManager {
         name: role.name,
         description: role.description,
         ruleName: role.ruleName,
+        data: role.data,
       });
 
       prevValue.set(role.name, rbacRole);
@@ -166,6 +168,7 @@ export default class DbManager extends BaseManager {
         name: permission.name,
         description: permission.description,
         ruleName: permission.ruleName,
+        data: permission.data,
       });
 
       prevValue.set(permission.name, rbacPermission);
@@ -313,6 +316,7 @@ export default class DbManager extends BaseManager {
         name: item.name,
         description: item.description,
         ruleName: item.ruleName,
+        data: item.data,
       });
 
       prevValue.set(item.name, rbacItem);
@@ -470,6 +474,7 @@ export default class DbManager extends BaseManager {
       name: item.name,
       description: item.description,
       ruleName: item.ruleName,
+      data: item.data,
     });
   }
 
@@ -490,6 +495,7 @@ export default class DbManager extends BaseManager {
         name: item.name,
         description: item.description,
         ruleName: item.ruleName,
+        data: item.data,
       });
 
       prevValue.set(item.name, rbacItem);
@@ -680,6 +686,7 @@ export default class DbManager extends BaseManager {
           name: permission.name,
           description: permission.description,
           ruleName: permission.ruleName,
+          data: permission.data,
         })
       );
       return prevValue;
@@ -719,6 +726,7 @@ export default class DbManager extends BaseManager {
           name: permission.name,
           description: permission.description,
           ruleName: permission.ruleName,
+          data: permission.data,
         })
       );
       return prevValue;

@@ -21,7 +21,7 @@ services:
     init: true
     volumes:
       - /opt/rbac/rbac-sequelize-manager/node_modules
-      - /opt/rbac/rbac-sequelize-manager/build
+      - /opt/rbac/rbac-sequelize-manager/lib
       - .:/opt/rbac/rbac-sequelize-manager
       - ../rbac:/opt/rbac/rbac
     environment:
