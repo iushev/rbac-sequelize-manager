@@ -22,13 +22,13 @@ describe("Assignment model", () => {
   });
 
   const userData = {
-    username: faker.internet.userName(),
+    username: faker.internet.username(),
     isActive: true,
     isSuperuser: false,
   } as Identity;
 
   const itemData = {
-    name: faker.random.word(),
+    name: faker.string.alpha(),
     type: ItemType.role,
   };
 

@@ -19,29 +19,29 @@ import { ItemChildModel } from "./ItemChildModel";
 import { AssignmentModel } from "./AssignmentModel";
 
 export class ItemModel extends Model {
-  public declare name: string;
-  public declare type: ItemType;
-  public declare description: string | null;
-  public declare ruleName: string | null;
-  public declare data: string | null;
+  declare public name: string;
+  declare public type: ItemType;
+  declare public description: string | null;
+  declare public ruleName: string | null;
+  declare public data: string | null;
 
-  public declare getRule: BelongsToGetAssociationMixin<RuleModel>;
-  public declare setRule: BelongsToSetAssociationMixin<RuleModel, string>;
-  public declare readonly rule: RuleModel;
+  declare public getRule: BelongsToGetAssociationMixin<RuleModel>;
+  declare public setRule: BelongsToSetAssociationMixin<RuleModel, string>;
+  declare public readonly rule: RuleModel;
 
-  public declare getParents: BelongsToManyGetAssociationsMixin<ItemModel>;
-  public declare setParents: BelongsToManySetAssociationsMixin<ItemModel, number>;
-  public declare addParent: BelongsToManyAddAssociationMixin<ItemModel, number>;
-  public declare hasParent: BelongsToManyHasAssociationMixin<ItemModel, number>;
-  public declare countParents: BelongsToManyCountAssociationsMixin;
-  public declare readonly parents: ItemModel[];
+  declare public getParents: BelongsToManyGetAssociationsMixin<ItemModel>;
+  declare public setParents: BelongsToManySetAssociationsMixin<ItemModel, number>;
+  declare public addParent: BelongsToManyAddAssociationMixin<ItemModel, number>;
+  declare public hasParent: BelongsToManyHasAssociationMixin<ItemModel, number>;
+  declare public countParents: BelongsToManyCountAssociationsMixin;
+  declare public readonly parents: ItemModel[];
 
-  public declare getChildren: BelongsToManyGetAssociationsMixin<ItemModel>;
-  public declare setChildren: BelongsToManySetAssociationsMixin<ItemModel, number>;
-  public declare addChild: BelongsToManyAddAssociationMixin<ItemModel, number>;
-  public declare hasChild: BelongsToManyHasAssociationMixin<ItemModel, number>;
-  public declare countChildren: BelongsToManyCountAssociationsMixin;
-  public declare readonly children: ItemModel[];
+  declare public getChildren: BelongsToManyGetAssociationsMixin<ItemModel>;
+  declare public setChildren: BelongsToManySetAssociationsMixin<ItemModel, number>;
+  declare public addChild: BelongsToManyAddAssociationMixin<ItemModel, number>;
+  declare public hasChild: BelongsToManyHasAssociationMixin<ItemModel, number>;
+  declare public countChildren: BelongsToManyCountAssociationsMixin;
+  declare public readonly children: ItemModel[];
 
   public get parentNames(): string[] {
     return this.parents.map((parent) => parent.name);

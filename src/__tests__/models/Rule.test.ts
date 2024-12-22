@@ -20,7 +20,7 @@ describe("Rule model", () => {
   });
 
   const ruleData = {
-    name: faker.random.word(),
+    name: faker.string.alpha(),
   };
 
   test("Create new rule", async () => {

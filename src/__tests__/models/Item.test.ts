@@ -22,11 +22,11 @@ describe("Item model", () => {
   });
 
   const itemData = {
-    name: faker.random.word(),
+    name: faker.string.alpha(),
     type: ItemType.role,
   };
   const ruleData = {
-    name: faker.random.word(),
+    name: faker.string.alpha(),
   };
 
   test("Create new item", async () => {
@@ -46,7 +46,7 @@ describe("Item model", () => {
       },
       {
         include: "rule",
-      }
+      },
     );
 
     expect(item).toBeTruthy();

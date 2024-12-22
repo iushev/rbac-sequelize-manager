@@ -3,8 +3,8 @@ import { Model, Sequelize, DataTypes } from "sequelize";
 import { RuleExecuteFunction } from "@iushev/rbac";
 
 export class RuleModel extends Model {
-  public declare name: string;
-  public declare data: string;
+  declare public name: string;
+  declare public data: string;
 
   public execute: RuleExecuteFunction = async () => true;
 }
@@ -22,7 +22,7 @@ export default (sequelize: Sequelize): typeof RuleModel => {
       sequelize,
       tableName: "rbac_rule",
       underscored: true,
-    }
+    },
   );
 
   return RuleModel;

@@ -21,7 +21,7 @@ describe("Permission model", () => {
 
   test("Create new permission", async () => {
     const permission = await PermissionModel.create({
-      name: faker.random.word(),
+      name: faker.string.alpha(),
     });
 
     expect(permission).toBeTruthy();

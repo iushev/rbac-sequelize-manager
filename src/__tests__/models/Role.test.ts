@@ -21,7 +21,7 @@ describe("Role model", () => {
 
   test("Create new role", async () => {
     const role = RoleModel.build({
-      name: faker.random.word(),
+      name: faker.string.alpha(),
     });
     await role.save();
 

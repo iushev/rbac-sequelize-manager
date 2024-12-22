@@ -78,8 +78,8 @@ export default class DbManager extends BaseManager {
           item.parents.reduce((itemParents, parent) => {
             itemParents.set(parent.name, this.items.get(parent.name));
             return itemParents;
-          }, new Map())
-        )
+          }, new Map()),
+        ),
       );
       return prevValue;
     }, new Map());
@@ -575,7 +575,7 @@ export default class DbManager extends BaseManager {
         where: {
           name,
         },
-      }
+      },
     );
     this.invalidateRbac();
     return true;
@@ -597,7 +597,7 @@ export default class DbManager extends BaseManager {
         where: {
           name,
         },
-      }
+      },
     );
 
     this.invalidateRbac();
@@ -687,7 +687,7 @@ export default class DbManager extends BaseManager {
           description: permission.description,
           ruleName: permission.ruleName,
           data: permission.data,
-        })
+        }),
       );
       return prevValue;
     }, new Map());
@@ -727,7 +727,7 @@ export default class DbManager extends BaseManager {
           description: permission.description,
           ruleName: permission.ruleName,
           data: permission.data,
-        })
+        }),
       );
       return prevValue;
     }, new Map());

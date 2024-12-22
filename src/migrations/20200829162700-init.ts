@@ -18,7 +18,7 @@ export const up = async ({ context: query }: { context: QueryInterface }) => {
       },
       {
         transaction,
-      }
+      },
     );
 
     await query.createTable(
@@ -42,7 +42,7 @@ export const up = async ({ context: query }: { context: QueryInterface }) => {
       },
       {
         transaction,
-      }
+      },
     );
 
     await query.addConstraint("rbac_item", {
@@ -78,7 +78,7 @@ export const up = async ({ context: query }: { context: QueryInterface }) => {
       },
       {
         transaction,
-      }
+      },
     );
 
     await query.addConstraint("rbac_item_child", {
@@ -123,7 +123,7 @@ export const up = async ({ context: query }: { context: QueryInterface }) => {
       },
       {
         transaction,
-      }
+      },
     );
 
     await query.addConstraint("rbac_assignment", {

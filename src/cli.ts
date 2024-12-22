@@ -33,7 +33,6 @@ findMigrations(path.resolve(__dirname), allMigrations);
 
 const migrations: any[] = [];
 allMigrations.forEach((value, key) => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const migration = require(value);
   migrations.push({
     name: key,

@@ -3,16 +3,16 @@ import { Model, Sequelize, DataTypes, BelongsToGetAssociationMixin, BelongsToSet
 import { ItemModel } from "./ItemModel";
 
 export class ItemChildModel extends Model {
-  public declare parentName: string;
-  public declare childName: string;
+  declare public parentName: string;
+  declare public childName: string;
 
-  public declare getParent: BelongsToGetAssociationMixin<ItemModel>;
-  public declare setParent: BelongsToSetAssociationMixin<ItemModel, string>;
-  public declare readonly parent: ItemModel;
+  declare public getParent: BelongsToGetAssociationMixin<ItemModel>;
+  declare public setParent: BelongsToSetAssociationMixin<ItemModel, string>;
+  declare public readonly parent: ItemModel;
 
-  public declare getChild: BelongsToGetAssociationMixin<ItemModel>;
-  public declare setChild: BelongsToSetAssociationMixin<ItemModel, string>;
-  public declare readonly child: ItemModel;
+  declare public getChild: BelongsToGetAssociationMixin<ItemModel>;
+  declare public setChild: BelongsToSetAssociationMixin<ItemModel, string>;
+  declare public readonly child: ItemModel;
 
   public static associate() {
     ItemChildModel.belongsTo(ItemModel, {
@@ -57,7 +57,7 @@ export default (sequelize: Sequelize): typeof ItemChildModel => {
       tableName: "rbac_item_child",
       underscored: true,
       timestamps: false,
-    }
+    },
   );
 
   return ItemChildModel;

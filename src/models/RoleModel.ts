@@ -8,7 +8,7 @@ import { ItemChildModel } from "./ItemChildModel";
 import { AssignmentModel } from "./AssignmentModel";
 
 export class RoleModel extends ItemModel {
-  public static associations: {
+  public static readonly associations: {
     rule: Association<RoleModel, RuleModel>;
     parents: Association<RoleModel, ItemModel>;
     children: Association<RoleModel, ItemModel>;
@@ -67,7 +67,7 @@ export default (sequelize: Sequelize): typeof RoleModel => {
           type: ItemType.role,
         },
       },
-    }
+    },
   );
 
   return RoleModel;

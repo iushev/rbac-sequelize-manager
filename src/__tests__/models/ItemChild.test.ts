@@ -22,12 +22,12 @@ describe("ItemChild model", () => {
   });
 
   const parentData = {
-    name: faker.random.word(),
+    name: faker.string.alpha(),
     type: ItemType.role,
   };
 
   const childData = {
-    name: faker.random.word(),
+    name: faker.string.alpha(),
     type: ItemType.role,
   };
 
