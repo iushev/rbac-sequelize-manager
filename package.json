@@ -12,13 +12,13 @@
     "rbac-sequelize-manager": "./lib/cli.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "rimraf ./lib && tsc",
     "watch": "tsc -w --preserveWatchOutput",
     "test": "jest --runInBand",
-    "test:watch": "jest ----watchAll --runInBand",
+    "test:watch": "jest --watchAll --runInBand",
     "coverage": "jest --coverage --runInBand",
     "lint": "eslint src",
-    "preversion": "rimraf ./lib && npm run build"
+    "preversion": "npm run build"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.1.0",
