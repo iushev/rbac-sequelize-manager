@@ -36,7 +36,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@iushev/rbac": "^1.0.55"
+    "@iushev/rbac": "^1.0.56"
   },
   "peerDependencies": {
     "pg": "^8.16.3",
