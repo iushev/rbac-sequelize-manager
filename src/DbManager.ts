@@ -43,7 +43,7 @@ export default class DbManager extends BaseManager {
    * @inheritdoc
    */
   public async load(): Promise<void> {
-    this.log("`DbManager: Loading RBAC.");
+    this.log("DbManager: Loading RBAC.");
     const data = await Promise.all([
       ItemModel.findAll({
         include: [
