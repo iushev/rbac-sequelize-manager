@@ -85,7 +85,10 @@ export default class DbManager extends BaseManager {
 
     this.rules = rules.reduce<Map<string, RbacRule>>((prevValue, rule) => {
       const ruleData = JSON.parse(rule.data);
-      const RuleClass = this.ruleClasses.get(ruleData.typeName) ?? RbacRule;
+      const RuleClass = this.ruleClasses.get(ruleData.typeName);
+      if (!RuleClass) {
+        throw new Error(`Unknown rule type: ${ruleData.typeName}`);
+      }
       const rbacRule = new RuleClass(rule.name, JSON.parse(ruleData.ruleData));
 
       prevValue.set(rule.name, rbacRule);
